@@ -1,0 +1,5 @@
+cut spritesheet into individual sprites.
+
+download entire charset database into folder.
+
+help command

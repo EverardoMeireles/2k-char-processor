@@ -1,5 +1,5 @@
 # Charset processing
-
+#
 # there are hundreds of thousands of rm2k/2k3 charsets available for free on the internet and
 # it would be a shame to put all of that to waste, even if the standard very old and is no longer in use
 #
@@ -7,21 +7,46 @@
 # - Convert rm2k/2k3 charsets to other engines with no loss of image quality
 # It should look roughly the same as the charsets from the very first old rm from 1995 which supported a
 # screen resolution of 320x240
+# - -charset: make a charset from the chars's pngs
+#   - (MANDATORY) char size                     (integer)
+#   - (MANDATORY) canvas x size                 (integer)
+#   - (MANDATORY) canvas y size                 (integer)
+#   - (OPTIONAL) -char_size     :   char size
+#       -(MANDATORY) individual char size(x)    (integer)
+#       -(MANDATORY) individual char size(y)    (integer)
+#   - (OPTIONAL) -canvas_size   :   canvas size
+#       -(MANDATORY) individual canvas size(x)  (integer)
+#       -(MANDATORY) individual canvas size(y)  (integer)
 #
-# - resize
+# - -VX: Converts rm2k char format to vx char format(down, left, right, up)
+#
+# - resize: resize pngs in folder
+#   - (MANDATORY) resize multiplier (integer)
+#   - (OPTIONAL) replace (text: replace)
+#
 #
 # CONSTRAINTS:
-# Only the png file format is supported.
+# //Only the png file format is supported.
 #
-# The first sub-parameter of '-charset' should not be a decimal number, as it could resoult on some sprites
+# //The first sub-parameter of '-charset' should not be a decimal number, as it could resoult on some sprites
 # overflowing out of the canvas.
 #
-# All of the png files in the folder must be the same size.
-
+# //All of the png files in the folder must be the same size.
+#
+# //-resize is meant to be used by itself, example : Python Processor.py -resize 2.
+# But if you want to combine -resize with other parameters, then use a second, optional sub-parameter 'replace'.
+# for example:
+# Python Processor.py -resize 2 replace -charset 3 3 3 -char_size 144 256 -canvas_size 576 512
+# with this command, the program will resize the chars on the folder, make the charset, and scale it by 3, don't forget
+# to specify the new chars's XxY resolution and the new canvas's XxY resolution as you increase the value of -resize,
+# for example if you use -resize 3 replace, -char_size and canvas_scale must be 3 times as high.
+#
+#
+#
 # KNOWN BUGS:
 # - Sometimes the pngs are saved starting by the index of 1 instead of 0
 #
-# - when using -canvas_scale, the canvas doesnt scale and insteas adopts the value of the first parameter
+# - when using -canvas_size, the canvas doesnt scale and insteas adopts the value of the first parameter
 
 from PIL import Image
 from PIL import ImageDraw
@@ -94,11 +119,11 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
     # character resize tuple arguments
     # 72: single charset base width(rm2K, 320x240 screen resolution)
     # 128: single charset base height(rm2K 320x240 screen resolution)
-    # sets the width and height of the base chars with the parameter -char_scale
-    # if there's no '-char_scale' parameter, it defaults to the base rm2k dimensions
-    if parameterIterate('-char_scale'):
-        xSizeToScale = int(argHierarchyProcess('-char_scale')[0]) * scaleMultiplier
-        ySizeToScale = int(argHierarchyProcess('-char_scale')[1]) * scaleMultiplier
+    # sets the width and height of the base chars with the parameter -char_size
+    # if there's no '-char_size' parameter, it defaults to the base rm2k dimensions
+    if parameterIterate('-char_size'):
+        xSizeToScale = int(argHierarchyProcess('-char_size')[0]) * scaleMultiplier
+        ySizeToScale = int(argHierarchyProcess('-char_size')[1]) * scaleMultiplier
     else:
         xSizeToScale = 72 * scaleMultiplier
         ySizeToScale = 128 * scaleMultiplier
@@ -107,11 +132,11 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
     # canvas resize tuple arguments
     # 288: canvas base width (rm2K, 320x240 resolution)
     # 256: canvas base height(rm2K, 320x240 resolution)
-    # sets the width and height of the canvas with the parameter -canvas_scale
-    # if there's no '-canvas_scale' parameter, it defaults to the base rm2k dimensions
-    if parameterIterate('-canvas_scale'):
-        xSizeCanvasScale = int(argHierarchyProcess('-canvas_scale')[0]) * xScaleMultiplier
-        ySizeCanvasScale = int(argHierarchyProcess('-canvas_scale')[1]) * yScaleMultiplier
+    # sets the width and height of the canvas with the parameter -canvas_size
+    # if there's no '-canvas_size' parameter, it defaults to the base rm2k dimensions
+    if parameterIterate('-canvas_size'):
+        xSizeCanvasScale = int(argHierarchyProcess('-canvas_size')[0]) * xScaleMultiplier
+        ySizeCanvasScale = int(argHierarchyProcess('-canvas_size')[1]) * yScaleMultiplier
         print(xSizeCanvasScale)
         print(ySizeCanvasScale)
 
@@ -211,37 +236,58 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
 
     # mageFinal.show()
 
-# Python ImageIterate charset 3
-if parameterIterate('-charset'):
-    if len(sys.argv) > 2:
-        scaleMultiplier = argHierarchyProcess('-charset')[0]
-        xScaleMultiplier = argHierarchyProcess('-charset')[1]
-        yScaleMultiplier = argHierarchyProcess('-charset')[2]
+def resizePng(multiplier, replace):
+    multiplier = int(multiplier)
+    for infile in glob.glob("*.png"):
+        img = Image.open(infile)
+        x,y = img.size
+        #print(type(x), type(y)) # 72 128
+        #x = stringConvertToIntFloat(x)
+        #y = stringConvertToIntFloat(y)
 
-        # if scaleMultiplier == isinstance(scaleMultiplier, float):
-        #     scaleMultiplier = float(scaleMultiplier)
-        #
-        # if xScaleMultiplier == isinstance(xScaleMultiplier, float):
-        #     xScaleMultiplier = float(xScaleMultiplier)
-        #
-        # if yScaleMultiplier == isinstance(yScaleMultiplier, float):
-        #     yScaleMultiplier = float(yScaleMultiplier)
+        x = int(x * multiplier)
+        y = int(y * multiplier)
+        print(x)
+        print(y)# 222222222 2222222
+        name = img.filename
 
+        print((x, y))
+        img = img.resize((x, y))
+        if replace == 'replace':
+            img.save(name, img.format, quality='keep')
+        else:
+            img.save('Resized_'+name, img.format, quality='keep')
 
-        charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier)
+#resize all pngs inside folder
+if parameterIterate('-resize'):
+    multiplier = argHierarchyProcess('-resize')[0]
 
-
-    elif len(sys.argv) != 5:
-        print('Error: 5 parameters are needed in total')
-        print('the 3 optional parameters are:')
-        print('argv[3]: base single charset scaling multiplier')
-        print('argv[4]: base canvas width multiplier')
-        print('argv[5]: base canvas height multiplier')
-        print('argv[6]:OPTIONAL parameter VX, converts charset to rmvx and later formats')
-        print('use these parameters or simply type Python ImageProcessing.py charset for default values of 3 3 3')
+    if len(argHierarchyProcess('-resize')) > 1:
+        replace = argHierarchyProcess('-resize')[1]
     else:
-        charsetConvert()
+        replace = 'replaceNot'
+
+    resizePng(multiplier, replace)
+
+#charset processor
+if parameterIterate('-charset'):
+
+    print('DFDFDFFDFD')
+    scaleMultiplier = argHierarchyProcess('-charset')[0]
+    xScaleMultiplier = argHierarchyProcess('-charset')[1]
+    yScaleMultiplier = argHierarchyProcess('-charset')[2]
 
 
-elif parameterIterate('faceset'):
-    print('&')
+    charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier)
+
+
+elif len(sys.argv) != 5:
+    print('Error: 5 parameters are needed in total')
+    print('the 3 optional parameters are:')
+    print('argv[3]: base single charset scaling multiplier')
+    print('argv[4]: base canvas width multiplier')
+    print('argv[5]: base canvas height multiplier')
+    print('argv[6]:OPTIONAL parameter VX, converts charset to rmvx and later formats')
+    print('use these parameters or simply type Python ImageProcessing.py charset for default values of 3 3 3')
+else:
+    charsetConvert()
