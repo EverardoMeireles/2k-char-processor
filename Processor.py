@@ -24,6 +24,7 @@
 #   - (MANDATORY) resize multiplier (integer)
 #   - (OPTIONAL) replace (text: replace)
 #
+# - -help
 #
 # CONSTRAINTS:
 # //Only the png file format is supported.
@@ -281,13 +282,20 @@ if parameterIterate('-charset'):
     charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier)
 
 
-elif len(sys.argv) != 5:
-    print('Error: 5 parameters are needed in total')
-    print('the 3 optional parameters are:')
-    print('argv[3]: base single charset scaling multiplier')
-    print('argv[4]: base canvas width multiplier')
-    print('argv[5]: base canvas height multiplier')
-    print('argv[6]:OPTIONAL parameter VX, converts charset to rmvx and later formats')
-    print('use these parameters or simply type Python ImageProcessing.py charset for default values of 3 3 3')
-else:
-    charsetConvert()
+# elif len(sys.argv) != 4:
+#     print('Error: 5 parameters are needed in total')
+#     print('the 3 optional parameters are:')
+#     print('argv[3]: base single charset scaling multiplier')
+#     print('argv[4]: base canvas width multiplier')
+#     print('argv[5]: base canvas height multiplier')
+#     print('argv[6]:OPTIONAL parameter VX, converts charset to rmvx and later formats')
+#     print('use these parameters or simply type Python ImageProcessing.py charset for default values of 3 3 3')
+
+# else:
+#     charsetConvert()
+
+if parameterIterate('-help'):
+    help = open('help.txt', 'r')
+    file_contents = help.read()
+    print (file_contents)
+    help.close()

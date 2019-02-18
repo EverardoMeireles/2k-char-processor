@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a4f22754-b917-40ad-8767-5e090eb83f30" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/res_viewer.png" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,10 +15,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Processor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="147" lean-forward="true" selection-start-line="147" selection-end-line="147" />
+            <state relative-caret-position="123">
+              <caret line="294" column="22" lean-forward="true" selection-start-line="294" selection-start-column="22" selection-end-line="294" selection-end-column="22" />
               <folding>
-                <element signature="e#934#955#0" expanded="true" />
+                <element signature="e#2331#2352#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -189,10 +187,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Processor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="147" lean-forward="true" selection-start-line="147" selection-end-line="147" />
+        <state relative-caret-position="123">
+          <caret line="294" column="22" lean-forward="true" selection-start-line="294" selection-start-column="22" selection-end-line="294" selection-end-column="22" />
           <folding>
-            <element signature="e#934#955#0" expanded="true" />
+            <element signature="e#2331#2352#0" expanded="true" />
           </folding>
         </state>
       </provider>

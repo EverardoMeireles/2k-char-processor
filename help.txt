@@ -1,0 +1,23 @@
+HOW TO USE THE COMMAND:
+This commands have parameters and sub-parameters
+some are mandatory and others are optional.
+
+PARAMETER HIERARCHY:
+- -charset: make a charset from the chars's pngs
+  - (MANDATORY) char size                     (integer)
+  - (MANDATORY) canvas x size                 (integer)
+  - (MANDATORY) canvas y size                 (integer)
+  - (OPTIONAL) -char_size     :   char size
+      -(MANDATORY) individual char size(x)    (integer)
+      -(MANDATORY) individual char size(y)    (integer)
+  - (OPTIONAL) -canvas_size   :   canvas size
+      -(MANDATORY) individual canvas size(x)  (integer)
+      -(MANDATORY) individual canvas size(y)  (integer)
+
+- -VX: Converts rm2k char format to vx char format(down, left, right, up)
+
+- resize: resize pngs in folder
+  - (MANDATORY) resize multiplier (integer)
+  - (OPTIONAL) replace (text: replace)
+
+usage example: Python Processor.py -resize 2 replace -charset 3 3 3 -char_size 144 256 -canvas_scale 576 512
