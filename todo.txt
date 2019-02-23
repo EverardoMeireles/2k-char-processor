@@ -1,5 +1,5 @@
-cut spritesheet into individual sprites.
+make transparent
 
-download entire charset database into folder.
+set naming convention
 
-help command
+divide code into functions as much as possible

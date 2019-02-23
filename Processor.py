@@ -98,6 +98,34 @@ def argHierarchyProcess(parentArgument):
 
     return childArgArray
 
+def charsetCutIntoPieces():
+    if not os.path.exists('Characters'):
+        os.makedirs('Characters')
+    i = 0
+
+    for infile in glob.glob("*.png"):
+        img = Image.open(infile)
+        w, h = img.size
+        # crop : left, upper, right, lower
+        imgTemp1 = img.crop((0, 0, w/4, h / 2))
+        imgTemp2 = img.crop((w/4, 0, w/2, h / 2))
+        imgTemp3 = img.crop((w/2, 0, ((w/2) + (w/4)), h / 2))
+        imgTemp4 = img.crop((((w/2) + (w/4)), 0, w, h / 2))
+        imgTemp5 = img.crop((0, h/2, w/4, h))
+        imgTemp6 = img.crop((w/4, h/2, w/2, h))
+        imgTemp7 = img.crop((w/2, h/2, ((w/2) + (w/4)), h))
+        imgTemp8 = img.crop((((w/2) + (w/4)), h/2, w, h))
+
+        imgTemp1.save('Characters/'+str(i) + '_' + '1' + '.png', imgTemp1.format, quality='keep')
+        imgTemp2.save('Characters/'+str(i) + '_' + '2' + '.png', imgTemp2.format, quality='keep')
+        imgTemp3.save('Characters/'+str(i) + '_' + '3' + '.png', imgTemp3.format, quality='keep')
+        imgTemp4.save('Characters/'+str(i) + '_' + '4' + '.png', imgTemp4.format, quality='keep')
+        imgTemp5.save('Characters/'+str(i) + '_' + '5' + '.png', imgTemp1.format, quality='keep')
+        imgTemp6.save('Characters/'+str(i) + '_' + '6' + '.png', imgTemp2.format, quality='keep')
+        imgTemp7.save('Characters/'+str(i) + '_' + '7' + '.png', imgTemp3.format, quality='keep')
+        imgTemp8.save('Characters/'+str(i) + '_' + '8' + '.png', imgTemp4.format, quality='keep')
+        i += 1
+    imgTemp8.show()
 
 def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier = 3):
     #Parameters:
@@ -258,6 +286,9 @@ def resizePng(multiplier, replace):
             img.save(name, img.format, quality='keep')
         else:
             img.save('Resized_'+name, img.format, quality='keep')
+
+if parameterIterate('-cut'):
+    charsetCutIntoPieces()
 
 #resize all pngs inside folder
 if parameterIterate('-resize'):
