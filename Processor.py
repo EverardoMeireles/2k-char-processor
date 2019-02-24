@@ -44,7 +44,7 @@
 # to specify the new chars's XxY resolution and the new canvas's XxY resolution as you increase the value of -resize,
 # for example if you use -resize 3 replace, -char_size and canvas_scale must be 3 times as high.
 #
-#
+# //-resize only works properly if the target pngs are in the same directory as the .py file.. for now.
 #
 # KNOWN BUGS:
 # - Sometimes the pngs are saved starting by the index of 1 instead of 0
@@ -56,24 +56,20 @@ from PIL import ImageDraw
 import glob
 import os
 import sys
-import time
 
 # Check if parameter exists
-# Valid parameters:charset, chipset, faceset
-
 def parameterIterate(argvCompare):
     i = 0
     matchCheck = 0
     while len(sys.argv) > i:
-        #print(i)
         if sys.argv[i] == argvCompare:
             matchCheck = sys.argv[i]
-            #print('check = '+ matchCheck)
             break
 
         i += 1
     return matchCheck
 
+# converts a string either to a int or a float dynamically.
 def stringConvertToIntFloat(strSample):
     temp = strSample
     if '.' in temp:
@@ -83,6 +79,7 @@ def stringConvertToIntFloat(strSample):
         final = int(temp)
     return final
 
+# Catch sub-parameters from the main parameter(the one that starts with a '-').
 def argHierarchyProcess(parentArgument):
     indexArg = 0
     parentFound = False
@@ -100,6 +97,7 @@ def argHierarchyProcess(parentArgument):
 
     return childArgArray
 
+# Cuts charset into individual character pngs.
 def charsetCutIntoPieces(sourcePath):
     if not os.path.exists('Characters'):
         os.makedirs('Characters')
@@ -128,8 +126,32 @@ def charsetCutIntoPieces(sourcePath):
         imgTemp8.save('Characters/'+str(i) + '_' + '8' + '.png', imgTemp4.format, quality='keep')
         i += 1
 
+# Resize pngs
+def resizePng(multiplier, replace):
+    multiplier = int(multiplier)
+    for infile in glob.glob("*.png"):
+        img = Image.open(infile)
+        x,y = img.size
+        #print(type(x), type(y)) # 72 128
+        #x = stringConvertToIntFloat(x)
+        #y = stringConvertToIntFloat(y)
+
+        x = int(x * multiplier)
+        y = int(y * multiplier)
+        print(x)
+        print(y)# 222222222 2222222
+        name = img.filename
+
+        print((x, y))
+        img = img.resize((x, y))
+        if replace == 'replace':
+            img.save(name, img.format, quality='keep')
+        else:
+            img.save('Resized_'+name, img.format, quality='keep')
+
+# the main functionality of this program, converts the old rm2k charset format to a new format by resizing it.
 def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier = 3, sourcePath = ""):
-    #Parameters:
+    # Parameters:
     # charset scale
     # canvas scale x
     # canvas scale y
@@ -178,10 +200,10 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
 
     sizeToScaleCanvas = xSizeCanvasScale, int(ySizeCanvasScale)
 
-
-
     # number of iterations before new file is created
     iterationLimit = int((xSizeCanvasScale / xSizeToScale) * (ySizeCanvasScale / ySizeToScale))
+
+    # Creates canvas
     try:
         imageFinal = Image.new('RGB', sizeToScaleCanvas)
 
@@ -194,100 +216,61 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
     e = 0
     draw = ImageDraw.Draw(imageFinal)
 
+    # creates the 'Generated' folder if it doesn't exists already.
     if not os.path.exists('Generated'):
         os.makedirs('Generated')
 
-
-
+    # Main loop starts.
     for infile in glob.glob(sourcePath+"*.png"):
 
         img = Image.open(infile)
 
+        # Converts character to the rmvx charset format.
         if parameterIterate('-VX'):
             w, h = img.size
             # w = stringConvertToIntFloat(w)
             # h = stringConvertToIntFloat(h)
             imgTemp1 = img.crop((0, 0, w, h/4))
             imgTemp2 = img.crop((0, h/4, w, h/2))
-            imgTemp3 = img.crop((0, h/2, w, ((h/2) + (h/4)) ))
+            imgTemp3 = img.crop((0, h/2, w, ((h/2) + (h/4))))
             imgTemp4 = img.crop((0, ((h/2) + (h/4)), w, h))
 
             img.paste(imgTemp3, (0, 0))
             img.paste(imgTemp4, (0, int((h/4))))
             img.paste(imgTemp2, (0, int((h/2))))
-            img.paste(imgTemp1, (0, int(((h/2) + (h/4))) ))
+            img.paste(imgTemp1, (0, int(((h/2) + (h/4)))))
 
-        # if parameterIterate('-VX'):
-        #     imgTemp1 = img.crop((0, 0, 72, 32))
-        #     imgTemp2 = img.crop((0, 32, 72, 64))
-        #     imgTemp3 = img.crop((0, 64, 72, 97))
-        #     imgTemp4 = img.crop((0, 97, 72, 128))
-        #
-        #     img.paste(imgTemp3, (0, 0))
-        #     img.paste(imgTemp4, (0, 32))
-        #     img.paste(imgTemp2, (0, 64))
-        #     img.paste(imgTemp1, (0, 97))
-
-
-
-
-
+        # Resize the character and paste it to the canvas.
         img = img.resize((int(xSizeToScale), int(ySizeToScale)))
         imageFinal.paste(img, (int(xScale), int(yScale)))
         xScale += xSizeToScale
+
+        # if 4 characters have been pasted to the canvas, set the y cursor down to print 4 more
         if xScale == xSizeCanvasScale:
             xScale = 0
             yScale = yScale + ySizeToScale
         i += 1
         #print('charset processed...')
-        #print(iterationLimit)
-        if i == iterationLimit:
-            #print('iterationlimit:' + str(iterationLimit))
 
+        # Saves completed charset
+        if i == iterationLimit:
             imageFinal.save('Generated/char_resized'+str(e)+'.png', imageFinal.format, quality='keep')
             #print('png created...')
             draw.rectangle([(0, 0), imageFinal.size], fill=(32, 156, 0))
-            #print('template wipe...')
+            #print('canvas wipe...')
             e += 1
             i = 0
             yScale = 0
             xScale = 0
-        #time.sleep(1)
-
-
-
-
-
     e += 1
+
+    # Saves the final charset if it has less then 8 sprites.
     if i%8 != 0:
         imageFinal.save('Generated/char_resized' + str(e) + '.png', imageFinal.format, quality='keep')
         # print('png created...')
         # print('template wipe...')
 
-    # mageFinal.show()
-
-def resizePng(multiplier, replace):
-    multiplier = int(multiplier)
-    for infile in glob.glob("*.png"):
-        img = Image.open(infile)
-        x,y = img.size
-        #print(type(x), type(y)) # 72 128
-        #x = stringConvertToIntFloat(x)
-        #y = stringConvertToIntFloat(y)
-
-        x = int(x * multiplier)
-        y = int(y * multiplier)
-        print(x)
-        print(y)# 222222222 2222222
-        name = img.filename
-
-        print((x, y))
-        img = img.resize((x, y))
-        if replace == 'replace':
-            img.save(name, img.format, quality='keep')
-        else:
-            img.save('Resized_'+name, img.format, quality='keep')
-
+# Check if the parameter exists
 if parameterIterate('-cut'):
     try:
         path = argHierarchyProcess('-cut')[0]
@@ -297,7 +280,7 @@ if parameterIterate('-cut'):
     print(path)
     charsetCutIntoPieces(path)
 
-#resize all pngs inside folder
+# resize all pngs inside folder.
 if parameterIterate('-resize'):
     multiplier = argHierarchyProcess('-resize')[0]
 
@@ -308,7 +291,7 @@ if parameterIterate('-resize'):
 
     resizePng(multiplier, replace)
 
-#charset processor
+#charset processor.
 if parameterIterate('-charset'):
 
     scaleMultiplier = argHierarchyProcess('-charset')[0]
@@ -328,19 +311,7 @@ if parameterIterate('-charset'):
 
     charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier, path)
 
-
-# elif len(sys.argv) != 4:
-#     print('Error: 5 parameters are needed in total')
-#     print('the 3 optional parameters are:')
-#     print('argv[3]: base single charset scaling multiplier')
-#     print('argv[4]: base canvas width multiplier')
-#     print('argv[5]: base canvas height multiplier')
-#     print('argv[6]:OPTIONAL parameter VX, converts charset to rmvx and later formats')
-#     print('use these parameters or simply type Python ImageProcessing.py charset for default values of 3 3 3')
-
-# else:
-#     charsetConvert()
-
+# show the user how to use the command.
 if parameterIterate('-help'):
     help = open('help.txt', 'r')
     file_contents = help.read()

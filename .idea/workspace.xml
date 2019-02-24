@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a4f22754-b917-40ad-8767-5e090eb83f30" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/help.txt" beforeDir="false" afterPath="$PROJECT_DIR$/help.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,8 +15,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Processor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="309">
-              <caret line="321" column="32" lean-forward="true" selection-start-line="321" selection-start-column="32" selection-end-line="321" selection-end-column="32" />
+            <state relative-caret-position="102">
+              <caret line="57" column="10" lean-forward="true" selection-start-line="57" selection-start-column="10" selection-end-line="57" selection-end-column="10" />
               <folding>
                 <element signature="e#2340#2361#0" expanded="true" />
               </folding>
@@ -43,6 +42,7 @@
       <find>char_scale</find>
       <find>-canvas_scale</find>
       <find>generated</find>
+      <find>resizepng</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -151,7 +151,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49881798" visible="true" weight="0.12381454" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49881798" visible="true" weight="0.12381454" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="TODO" order="2" sideWeight="0.501182" side_tool="true" weight="0.12400636" />
       <window_info id="Favorites" order="3" side_tool="true" />
@@ -163,7 +163,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Version Control" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="8" sideWeight="0.5007949" side_tool="true" visible="true" weight="0.248104" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5007949" side_tool="true" visible="true" weight="0.248104" />
       <window_info anchor="bottom" id="Python Console" order="9" weight="0.3250444" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -177,8 +177,8 @@
     <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/1050342006/builtins.py" />
     <entry file="file://$PROJECT_DIR$/Processor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="321" column="32" lean-forward="true" selection-start-line="321" selection-start-column="32" selection-end-line="321" selection-end-column="32" />
+        <state relative-caret-position="102">
+          <caret line="57" column="10" lean-forward="true" selection-start-line="57" selection-start-column="10" selection-end-line="57" selection-end-column="10" />
           <folding>
             <element signature="e#2340#2361#0" expanded="true" />
           </folding>
