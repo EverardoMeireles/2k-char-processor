@@ -75,13 +75,11 @@ def stringConvertToIntFloat(strSample):
     if '.' in temp:
         final = float(temp)
     else:
-        final = float(temp)
         final = int(temp)
     return final
 
 # Catch sub-parameters from the main parameter(the one that starts with a '-').
 def argHierarchyProcess(parentArgument):
-    indexArg = 0
     parentFound = False
     childArgArray = []
 
@@ -131,15 +129,12 @@ def resizePng(multiplier, replace):
     multiplier = int(multiplier)
     for infile in glob.glob("*.png"):
         img = Image.open(infile)
-        x,y = img.size
-        #print(type(x), type(y)) # 72 128
-        #x = stringConvertToIntFloat(x)
-        #y = stringConvertToIntFloat(y)
+        x, y = img.size
 
         x = int(x * multiplier)
         y = int(y * multiplier)
         print(x)
-        print(y)# 222222222 2222222
+        print(y)
         name = img.filename
 
         print((x, y))
@@ -207,7 +202,7 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
     try:
         imageFinal = Image.new('RGB', sizeToScaleCanvas)
 
-    except TypeError as e:
+    except TypeError:
         print('################################################')
         print('ERROR: dimensions of png must be both integers')
         print('################################################')
@@ -265,7 +260,7 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
     e += 1
 
     # Saves the final charset if it has less then 8 sprites.
-    if i%8 != 0:
+    if i % 8 != 0:
         imageFinal.save('Generated/char_resized' + str(e) + '.png', imageFinal.format, quality='keep')
         # print('png created...')
         # print('template wipe...')
@@ -291,7 +286,7 @@ if parameterIterate('-resize'):
 
     resizePng(multiplier, replace)
 
-#charset processor.
+# charset processor.
 if parameterIterate('-charset'):
 
     scaleMultiplier = argHierarchyProcess('-charset')[0]
@@ -308,12 +303,11 @@ if parameterIterate('-charset'):
     print(argHierarchyProcess('-charset')[1])
     print(argHierarchyProcess('-charset')[2])
 
-
     charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier, path)
 
 # show the user how to use the command.
 if parameterIterate('-help'):
-    help = open('help.txt', 'r')
-    file_contents = help.read()
-    print (file_contents)
-    help.close()
+    helpFile = open('help.txt', 'r')
+    file_contents = helpFile.read()
+    print(file_contents)
+    helpFile.close()
