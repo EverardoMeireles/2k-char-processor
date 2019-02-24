@@ -11,10 +11,10 @@
 #   - (MANDATORY) char size                     (integer)
 #   - (MANDATORY) canvas x size                 (integer)
 #   - (MANDATORY) canvas y size                 (integer)
-#   - (OPTIONAL) -char_size     :   char size
+#   - (OPTIONAL) -char_size     :   char size if you're using a charset format other than rm2k
 #       -(MANDATORY) individual char size(x)    (integer)
 #       -(MANDATORY) individual char size(y)    (integer)
-#   - (OPTIONAL) -canvas_size   :   canvas size
+#   - (OPTIONAL) -canvas_size   :   canvas size if you're using a charset format other than rm2k
 #       -(MANDATORY) individual canvas size(x)  (integer)
 #       -(MANDATORY) individual canvas size(y)  (integer)
 #
@@ -23,6 +23,8 @@
 # - resize: resize pngs in folder
 #   - (MANDATORY) resize multiplier (integer)
 #   - (OPTIONAL) replace (text: replace)
+#
+# - -cut: Cuts a full charset into individual character sprites
 #
 # - -help
 #
@@ -89,21 +91,21 @@ def argHierarchyProcess(parentArgument):
     for currentArg in sys.argv:
 
         if parentFound:
-            childArgArray.append(currentArg)
             if '-' in currentArg:
                 break
+            childArgArray.append(currentArg)
 
         if currentArg == parentArgument:
             parentFound = True
 
     return childArgArray
 
-def charsetCutIntoPieces():
+def charsetCutIntoPieces(sourcePath):
     if not os.path.exists('Characters'):
         os.makedirs('Characters')
     i = 0
 
-    for infile in glob.glob("*.png"):
+    for infile in glob.glob(sourcePath + "*.png"):
         img = Image.open(infile)
         w, h = img.size
         # crop : left, upper, right, lower
@@ -125,9 +127,8 @@ def charsetCutIntoPieces():
         imgTemp7.save('Characters/'+str(i) + '_' + '7' + '.png', imgTemp3.format, quality='keep')
         imgTemp8.save('Characters/'+str(i) + '_' + '8' + '.png', imgTemp4.format, quality='keep')
         i += 1
-    imgTemp8.show()
 
-def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier = 3):
+def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier = 3, sourcePath = ""):
     #Parameters:
     # charset scale
     # canvas scale x
@@ -198,7 +199,7 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
 
 
 
-    for infile in glob.glob("*.png"):
+    for infile in glob.glob(sourcePath+"*.png"):
 
         img = Image.open(infile)
 
@@ -288,7 +289,13 @@ def resizePng(multiplier, replace):
             img.save('Resized_'+name, img.format, quality='keep')
 
 if parameterIterate('-cut'):
-    charsetCutIntoPieces()
+    try:
+        path = argHierarchyProcess('-cut')[0]
+    except IndexError as e:
+        path = ""
+        print("No source path specified, picking charset pngs from the local directory")
+    print(path)
+    charsetCutIntoPieces(path)
 
 #resize all pngs inside folder
 if parameterIterate('-resize'):
@@ -304,13 +311,22 @@ if parameterIterate('-resize'):
 #charset processor
 if parameterIterate('-charset'):
 
-    print('DFDFDFFDFD')
     scaleMultiplier = argHierarchyProcess('-charset')[0]
     xScaleMultiplier = argHierarchyProcess('-charset')[1]
     yScaleMultiplier = argHierarchyProcess('-charset')[2]
 
+    try:
+        path = argHierarchyProcess('-charset')[3]
+    except IndexError as e:
+        path = ""
+        print("No source path specified, picking character pngs from the local directory")
 
-    charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier)
+    print(argHierarchyProcess('-charset')[0])
+    print(argHierarchyProcess('-charset')[1])
+    print(argHierarchyProcess('-charset')[2])
+
+
+    charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier, path)
 
 
 # elif len(sys.argv) != 4:
