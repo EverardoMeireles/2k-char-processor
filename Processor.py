@@ -1,20 +1,25 @@
 # Charset processing
 #
-# there are hundreds of thousands of rm2k/2k3 charsets available for free on the internet and
+# there are tens of thousands of rm2k/2k3 charsets available for free on the internet and
 # it would be a shame to put all of that to waste, even if the standard very old and is no longer in use
 #
 # this program lets you:
 # - Convert rm2k/2k3 charsets to other engines with no loss of image quality
 # It should look roughly the same as the charsets from the very first old rm from 1995 which supported a
 # screen resolution of 320x240
+#
+#
+#
+#COMMANDS:
+
 # - -charset: make a charset from the chars's pngs
-#   - (MANDATORY) char size                     (integer)
-#   - (MANDATORY) canvas x size                 (integer)
-#   - (MANDATORY) canvas y size                 (integer)
-#   - (OPTIONAL) -char_size     :   char size if you're using a charset format other than rm2k
+#   - (MANDATORY) char size multiplier          (integer)
+#   - (MANDATORY) canvas x size multiplier      (integer)
+#   - (MANDATORY) canvas y size multiplier      (integer)
+#   - (OPTIONAL) -char_size     :   char size if you're using a charset format other than the standard rm2k format
 #       -(MANDATORY) individual char size(x)    (integer)
 #       -(MANDATORY) individual char size(y)    (integer)
-#   - (OPTIONAL) -canvas_size   :   canvas size if you're using a charset format other than rm2k
+#   - (OPTIONAL) -canvas_size   :   canvas size if you're using a charset format other than the standard rm2k format
 #       -(MANDATORY) individual canvas size(x)  (integer)
 #       -(MANDATORY) individual canvas size(y)  (integer)
 #
@@ -22,42 +27,191 @@
 #
 # - resize: resize pngs in folder
 #   - (MANDATORY) resize multiplier (integer)
-#   - (OPTIONAL) replace (text: replace)
+#   - (MANDATORY) resize characters or charsets?(text = charset or character)
 #
 # - -cut: Cuts a full charset into individual character sprites
+#
+# - -transparent : makes the generated charset transparent
+#    - (MANDATORY) path to the png to make transparent(not using this parameter will make the individual character pngs
+#                 in the root folder transparent (text)
+#    - (MANDATORY) background color red (integer)
+#    - (MANDATORY) background color green (integer)
+#    - (MANDATORY) background color blue (integer)
 #
 # - -help
 #
 # CONSTRAINTS:
 # //Only the png file format is supported.
 #
-# //The first sub-parameter of '-charset' should not be a decimal number, as it could resoult on some sprites
+# //The first sub-parameter of '-charset' should not be a decimal number, as it could result on some sprites
 # overflowing out of the canvas.
 #
-# //All of the png files in the folder must be the same size.
+# //All of the png files in the character folder must be the same size.
 #
-# //-resize is meant to be used by itself, example : Python Processor.py -resize 2.
-# But if you want to combine -resize with other parameters, then use a second, optional sub-parameter 'replace'.
-# for example:
-# Python Processor.py -resize 2 replace -charset 3 3 3 -char_size 144 256 -canvas_size 576 512
-# with this command, the program will resize the chars on the folder, make the charset, and scale it by 3, don't forget
-# to specify the new chars's XxY resolution and the new canvas's XxY resolution as you increase the value of -resize,
-# for example if you use -resize 3 replace, -char_size and canvas_scale must be 3 times as high.
 #
-# //-resize only works properly if the target pngs are in the same directory as the .py file.. for now.
+#
+#
+# command tested for -transparent: Python Processor.py -transparent .\Generated\
+#
 #
 # KNOWN BUGS:
 # - Sometimes the pngs are saved starting by the index of 1 instead of 0
 #
-# - when using -canvas_size, the canvas doesnt scale and insteas adopts the value of the first parameter
-
+# - when using -canvas_size, the canvas doesnt scale and instead adopts the value of the first parameter
+#
+#
+# os.system("start /wait cmd /c Python Processor.py")
+from tkinter import *
 from PIL import Image
 from PIL import ImageDraw
 import glob
 import os
 import sys
 
-# Check if parameter exists
+
+def closeWindow():
+    window.destroy()
+    exit()
+
+def check1Changed():
+    checklC = ""
+
+window = Tk()
+window.title("2k-char-processor")
+window.configure()
+
+
+#
+# frame3 = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
+# frame3.grid(row=7, sticky=W)
+#
+# frame3 = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
+# frame3.grid(row=8, sticky=W)
+
+path = ""
+choice = StringVar()
+charSize= StringVar()
+canvasSizeX= StringVar()
+canvasSizeY= StringVar()
+checkVXValue = StringVar()
+charsetOrCharacterResize = StringVar()
+multiplier=StringVar()
+charsetOrCharacterTransparent = StringVar()
+optional1CharSizeX = StringVar()
+optional1CharSizeY = StringVar()
+optiona12CanvasSizeX = StringVar()
+optional2CanvasSizeY = StringVar()
+r = StringVar()
+g = StringVar()
+b = StringVar()
+
+def click():
+    print("choice: "+str(choice))
+    commandString = "Python Processor.py "
+    if choice.get() == "cut":
+        print("AOAOAOAOAOAO")
+        commandString = commandString + "-cut ./Generated/"
+    else:
+        if choice.get() == "charset":
+            commandString = commandString + "-charset "+charSize.get()+" "+canvasSizeY.get()+" "+canvasSizeY.get()+ " ./characters/"
+            # Python Processor.py -resize 2 replace -charset 3 3 3 -char_size 144 256 -canvas_size 576 512
+            if(len(optional1CharSizeX.get())!=0 and len(optional1CharSizeY.get())!=0 and len(optiona12CanvasSizeX.get())!=0 and len(optional2CanvasSizeY.get())!=0):
+                commandString = commandString + " -char_size "+optional1CharSizeX.get()+" "+ optional1CharSizeY.get()+" -canvas_size "+optiona12CanvasSizeX.get()+" "+optional2CanvasSizeY.get()
+            if checkVXValue.get() == "on":
+                commandString = commandString + " -VX"
+        else:
+            if choice.get() == "resize":
+                commandString = commandString + "-resize "+multiplier.get()+" "+charsetOrCharacterResize.get()
+            else:
+                if choice.get() == "transparent":
+                    commandString = commandString + "-transparent"
+                    # if charsetOrCharacterTransparent.get() == "characters":
+                    #     commandString = commandString + " ./characters/"
+                    # else:
+                    #     commandString = commandString + " ./Generated/"
+                    commandString = commandString + " "+charsetOrCharacterTransparent.get()
+                    commandString = commandString + " "+r.get()+" "+g.get()+" "+b.get()
+
+    print("choice is :"+choice.get())
+    print("String: "+commandString)
+    os.system("start /wait cmd /c "+commandString)
+
+Label(window, text="2k char processor", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
+Label(window, text="Put your charsets in the 'Generated' folder, and your individual character sprites in the root folder and select one of the options below", fg="black", font="none 9 bold") .grid(row=2, column=0, sticky=W)
+Label(window, text="What do you want to do?", fg="black", font="none 12 bold") .grid(row=3, column=0, sticky=W,pady=6)###############################################################################################################
+
+#-cut
+checkCut = Radiobutton(window, text="cut a charset into individual character spritesheets",variable=choice, value="cut") .grid(row=4, column=0, sticky=W)
+frameCut = Frame(window, borderwidth=2, relief = "groove", pady=5)
+frameCut.grid(row=5, sticky=W)#########################################################################################################################################################################################################
+
+#line break
+Label(window, text="\n", fg="black", font="none 12 bold") .grid(row=6, column=0, sticky=W)###############################################################################################################
+#-charset
+checkCharset = Radiobutton(window, text="Make a charset from individual char sprites and resize the charset",variable=choice, value="charset") .grid(row=7, column=0, sticky=W)
+frameCharset = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
+frameCharset.grid(row=8, sticky=W)#####################################################################################################################################################################################################
+Label(frameCharset, text="Character size multiplier", fg="black", font="none 12 bold") .grid(row=0, column=0, sticky=W)
+charSizeEntry = Entry(frameCharset, width=5, textvariable=charSize) .grid(row=0, column=1, sticky=W)
+Label(frameCharset, text="Charset canvas size multiplier", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
+Label(frameCharset, text="X", fg="black", font="none 6 bold") .grid(row=1, column=1, sticky=E)
+canvasSizeXEntry = Entry(frameCharset, width=5,textvariable=canvasSizeX) .grid(row=1, column=2, sticky=W)
+Label(frameCharset, text="Y", fg="black", font="none 6 bold") .grid(row=1, column=3, sticky=W)
+canvasSizeYEntry = Entry(frameCharset, width=5,textvariable=canvasSizeY) .grid(row=1, column=4, sticky=W)
+#optional 1
+Label(frameCharset, text="(optional)Custom char size", fg="black", font="none 12 bold") .grid(row=2, column=0, sticky=W)
+Label(frameCharset, text="X", fg="black", font="none 6 bold") .grid(row=2, column=1, sticky=E)
+X1 = Entry(frameCharset, width=5, textvariable=optional1CharSizeX) .grid(row=2, column=2, sticky=W)
+Label(frameCharset, text="Y", fg="black", font="none 6 bold") .grid(row=2, column=3, sticky=W)
+Y1 = Entry(frameCharset, width=5, textvariable=optional1CharSizeY) .grid(row=2, column=4, sticky=W)
+#optional 2
+Label(frameCharset, text="(optional)Custom canvas size", fg="black", font="none 12 bold") .grid(row=3, column=0, sticky=W)
+Label(frameCharset, text="X", fg="black", font="none 6 bold") .grid(row=3, column=1, sticky=E)
+X2 = Entry(frameCharset, width=5, textvariable=optiona12CanvasSizeX) .grid(row=3, column=2, sticky=W)
+Label(frameCharset, text="Y", fg="black", font="none 6 bold") .grid(row=3, column=3, sticky=W)
+Y2 = Entry(frameCharset, width=5, textvariable=optional2CanvasSizeY) .grid(row=3, column=4, sticky=W)
+checkVX = Checkbutton(frameCharset, text='Convert to VX format(Down, ,Left, Right, Up)', onvalue='on', offvalue='off',variable=checkVXValue) .grid(row=4, column=0, sticky=W)
+
+#line break
+Label(window, text="\n", fg="black", font="none 12 bold") .grid(row=9, column=0, sticky=W)###############################################################################################################
+
+#-resize
+checkResize = Radiobutton(window, text="Resize",variable=choice, value="resize") .grid(row=10, column=0, sticky=W)
+frameResize = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
+frameResize.grid(row=11, sticky=W)######################################################################################################################################################################################################
+Label(frameResize, text="Character size multiplier", fg="black", font="none 12 bold") .grid(row=0, column=0, sticky=W)
+resizeMultiplier = Entry(frameResize, width=5, textvariable=multiplier) .grid(row=0, column=1, sticky=W)
+Label(frameResize, text="Resize character or charset?", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
+R1 = Radiobutton(frameResize, text="characters", variable=charsetOrCharacterResize, value="character") .grid(row=1, column=1, sticky=W)
+R2 = Radiobutton(frameResize, text="charsets", variable=charsetOrCharacterResize, value="charset") .grid(row=1, column=2, sticky=W)
+
+#line break
+Label(window, text="\n", fg="black", font="none 12 bold") .grid(row=12, column=0, sticky=W)###############################################################################################################
+
+#-transparent
+checkTransparent = Radiobutton(window, text="make transparent",variable=choice, value="transparent") .grid(row=13, column=0, sticky=W)
+frameTransparent = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
+frameTransparent.grid(row=14, sticky=W)#################################################################################################################################################################################################
+Label(frameTransparent, text="make characters or charsets transparent?", fg="black", font="none 12 bold") .grid(row=0, column=0, sticky=W)
+R2 = Radiobutton(frameTransparent, text="characters",variable=charsetOrCharacterTransparent, value="./characters/") .grid(row=0, column=1, sticky=W)
+R3 = Radiobutton(frameTransparent, text="charsets", variable=charsetOrCharacterTransparent, value="./Generated/") .grid(row=0, column=2, sticky=W)
+Label(frameTransparent, text="Background color", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
+Label(frameTransparent, text="R", fg="black", font="none 8 bold") .grid(row=1, column=1, sticky=E)
+red = Entry(frameTransparent, width=10, textvariable=r) .grid(row=1, column=2, sticky=W)
+Label(frameTransparent, text="G", fg="black", font="none 8 bold") .grid(row=1, column=3, sticky=W)
+green = Entry(frameTransparent, width=10, textvariable=g) .grid(row=1, column=4, sticky=W)
+Label(frameTransparent, text="B", fg="black", font="none 8 bold") .grid(row=1, column=5, sticky=W)
+blue = Entry(frameTransparent, width=10, textvariable=b) .grid(row=1, column=6, sticky=W)
+
+
+
+#buttons
+Button(window, text ="SUBMIT", width=6, command=click) .grid(row=15, column=0, sticky=W,pady=5)#########################################################################################################################################
+
+Button(window, text ="EXIT", width=6, command=closeWindow) .grid(row=16, column=0, sticky=W)############################################################################################################################################
+
+
+
 def parameterIterate(argvCompare):
     i = 0
     matchCheck = 0
@@ -97,9 +251,13 @@ def argHierarchyProcess(parentArgument):
 
 # Cuts charset into individual character pngs.
 def charsetCutIntoPieces(sourcePath):
-    if not os.path.exists('Characters'):
-        os.makedirs('Characters')
+    # if not os.path.exists('Characters'):
+    #     os.makedirs('Characters')
+
     i = 0
+    #sourcePath default value
+    if(sourcePath == ""):
+        sourcePath = "./Generated/"
 
     for infile in glob.glob(sourcePath + "*.png"):
         img = Image.open(infile)
@@ -125,9 +283,13 @@ def charsetCutIntoPieces(sourcePath):
         i += 1
 
 # Resize pngs
-def resizePng(multiplier, replace):
+def resizePng(multiplier, mode, replace):
     multiplier = int(multiplier)
-    for infile in glob.glob("*.png"):
+    if mode == "charset":
+        path = "./Generated/"
+    else:
+        path = "./characters/"
+    for infile in glob.glob(path + "*.png"):
         img = Image.open(infile)
         x, y = img.size
 
@@ -142,16 +304,38 @@ def resizePng(multiplier, replace):
         if replace == 'replace':
             img.save(name, img.format, quality='keep')
         else:
-            img.save('Resized_'+name, img.format, quality='keep')
+            img.save(name, img.format, quality='keep')
 
 # the main functionality of this program, converts the old rm2k charset format to a new format by resizing it.
-def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier = 3, sourcePath = ""):
+
+#make background transparent
+def removeBackground(sourcePath,r,g,b):
+    print(sourcePath + "*.png")
+    for infile in glob.glob(sourcePath + "*.png"):
+        img = Image.open(infile)
+        img = img.convert("RGBA")
+        print(infile)
+        datas = img.getdata()
+
+        newData = []
+        for item in datas:
+            if item[0] == int(r) and item[1] == int(g) and item[2] == int(b):
+                newData.append((int(r), int(g), int(b), 0))
+            # if item[0] == 32 and item[1] == 156 and item[2] == 0:
+            #     newData.append((32, 156, 0, 0))
+            else:
+                newData.append(item)
+
+        img.putdata(newData)
+        img.save(infile, 'png')
+
+def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier = 3, sourcePath = "./characters/"):
     # Parameters:
     # charset scale
     # canvas scale x
     # canvas scale y
 
-    # this function takes all charset pngs in the folder and converts it to another size and/or canvas shape.
+    # this function takes all character pngs in the 'characters' folder and converts it to a charset of size and/or canvas shape.
 
     # the parameter scaleMultiplier should not be a float, it would make the sprites overflow out of the canvas
     # the iteration process starts at the top-left of the image
@@ -265,26 +449,40 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
         # print('png created...')
         # print('template wipe...')
 
+
+# remove background(make transparent)
+if parameterIterate('-transparent'):
+    try:
+        path = argHierarchyProcess('-transparent')[0]
+    except IndexError as e:
+        path = ""
+        print("No source path specified, picking pngs from the local directory to make transparent")
+    r = argHierarchyProcess('-transparent')[1]
+    g = argHierarchyProcess('-transparent')[2]
+    b = argHierarchyProcess('-transparent')[3]
+    removeBackground(path,r,g,b)
+    #removeBackground(path)
+
 # Check if the parameter exists
 if parameterIterate('-cut'):
     try:
         path = argHierarchyProcess('-cut')[0]
     except IndexError as e:
-        path = ""
-        print("No source path specified, picking charset pngs from the local directory")
+        path = "./Generated/"
+        print("No source path specified, picking charset pngs from the 'Generated' folder")
     print(path)
     charsetCutIntoPieces(path)
 
 # resize all pngs inside folder.
 if parameterIterate('-resize'):
     multiplier = argHierarchyProcess('-resize')[0]
-
-    if len(argHierarchyProcess('-resize')) > 1:
-        replace = argHierarchyProcess('-resize')[1]
+    mode = ""
+    mode = argHierarchyProcess('-resize')[1]
+    if len(argHierarchyProcess('-resize')) > 2:
+        replace = argHierarchyProcess('-resize')[2]
     else:
         replace = 'replaceNot'
-
-    resizePng(multiplier, replace)
+    resizePng(multiplier, mode, replace)
 
 # charset processor.
 if parameterIterate('-charset'):
@@ -311,3 +509,7 @@ if parameterIterate('-help'):
     file_contents = helpFile.read()
     print(file_contents)
     helpFile.close()
+
+if parameterIterate('-start'):
+    window.mainloop()
+

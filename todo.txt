@@ -1,3 +1,0 @@
-make transparent
-
-further divide code into functions as much as possible

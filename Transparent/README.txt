@@ -1,1 +1,0 @@
-Some transparent chars to use later testing.
