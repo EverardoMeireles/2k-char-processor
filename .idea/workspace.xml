@@ -1,44 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Processor.py" line="142" />
+    <bookmark url="file://$PROJECT_DIR$/Processor.py" line="140" />
     <bookmark url="file://$PROJECT_DIR$/Processor.py" line="32" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4f22754-b917-40ad-8767-5e090eb83f30" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Generated/char_resized0.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Generated/char_resized1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Generated/char_resized3.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README" beforeDir="false" afterPath="$PROJECT_DIR$/README" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transparent/4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transparent/5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transparent/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transparent/body1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transparent/body2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transparent/char_resized.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/5.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/6.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/7.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/8.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/9.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chars/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/help.txt" beforeDir="false" afterPath="$PROJECT_DIR$/help.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,10 +23,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Processor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
-              <caret line="508" column="26" selection-start-line="508" selection-start-column="21" selection-end-line="508" selection-end-column="26" />
+            <state relative-caret-position="48">
+              <caret line="79" column="18" selection-start-line="79" selection-start-column="18" selection-end-line="79" selection-end-column="18" />
               <folding>
-                <element signature="e#3073#3094#0" expanded="true" />
+                <element signature="e#2494#2515#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -98,6 +70,7 @@
       <find>multiplier</find>
       <find>charsetOrCharacterResize</find>
       <find>charsetOrCharacterTransparent</find>
+      <find>mainloop</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -111,7 +84,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-7" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -203,22 +176,22 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="0" width="974" height="1047" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49881798" weight="0.07218124" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49881798" visible="true" weight="0.07218124" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="TODO" order="2" sideWeight="0.501182" side_tool="true" weight="0.12400636" />
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49920508" weight="0.3285968" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49841937" weight="0.32827735" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Version Control" order="6" />
-      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49947312" weight="0.32936078" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="8" sideWeight="0.50052685" side_tool="true" visible="true" weight="0.19912472" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49894625" visible="true" weight="0.32936078" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50105375" side_tool="true" visible="true" weight="0.32936078" />
       <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.9077977" weight="0.32502708" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -232,10 +205,10 @@
     <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/1050342006/builtins.py" />
     <entry file="file://$PROJECT_DIR$/Processor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="508" column="26" selection-start-line="508" selection-start-column="21" selection-end-line="508" selection-end-column="26" />
+        <state relative-caret-position="48">
+          <caret line="79" column="18" selection-start-line="79" selection-start-column="18" selection-end-line="79" selection-end-column="18" />
           <folding>
-            <element signature="e#3073#3094#0" expanded="true" />
+            <element signature="e#2494#2515#0" expanded="true" />
           </folding>
         </state>
       </provider>

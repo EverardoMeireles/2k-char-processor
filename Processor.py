@@ -68,7 +68,6 @@ import glob
 import os
 import sys
 
-
 def closeWindow():
     window.destroy()
     exit()
@@ -79,7 +78,6 @@ def check1Changed():
 window = Tk()
 window.title("2k-char-processor")
 window.configure()
-
 
 #
 # frame3 = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
@@ -513,3 +511,4 @@ if parameterIterate('-help'):
 if parameterIterate('-start'):
     window.mainloop()
 
+window.mainloop()
