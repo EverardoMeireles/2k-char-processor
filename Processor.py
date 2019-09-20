@@ -86,6 +86,7 @@ window.configure()
 # frame3 = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
 # frame3.grid(row=8, sticky=W)
 
+loopCycle = 0
 path = ""
 choice = StringVar()
 charSize= StringVar()
@@ -511,4 +512,7 @@ if parameterIterate('-help'):
 if parameterIterate('-start'):
     window.mainloop()
 
-window.mainloop()
+if loopCycle != 0:
+    window.mainloop()
+
+loopCycle = loopCycle+1
