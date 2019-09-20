@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/Processor.py" line="141" />
+    <bookmark url="file://$PROJECT_DIR$/Processor.py" line="150" />
     <bookmark url="file://$PROJECT_DIR$/Processor.py" line="32" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a4f22754-b917-40ad-8767-5e090eb83f30" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Processor.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,8 +21,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Processor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-6855">
-              <caret line="88" column="9" selection-start-line="88" selection-start-column="9" selection-end-line="88" selection-end-column="9" />
+            <state relative-caret-position="537">
+              <caret line="78" column="4" selection-start-line="78" selection-start-column="4" selection-end-line="78" selection-end-column="4" />
               <folding>
                 <element signature="e#2494#2515#0" expanded="true" />
               </folding>
@@ -39,8 +41,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>parameterIterate</find>
-      <find>print</find>
       <find>resize</find>
       <find>char_scale</find>
       <find>-canvas_scale</find>
@@ -66,7 +66,11 @@
       <find>charsetOrCharacterResize</find>
       <find>charsetOrCharacterTransparent</find>
       <find>mainloop</find>
+      <find>window.mainloop()</find>
       <find>click</find>
+      <find>parameterIterate</find>
+      <find>exit</find>
+      <find>cmd</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -134,7 +138,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ImageProcessing.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Processor.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -173,6 +177,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49881798" visible="true" weight="0.07218124" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -180,13 +185,13 @@
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49841937" weight="0.32827735" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49367756" weight="0.32827735" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Version Control" order="6" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49894625" visible="true" weight="0.32936078" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50105375" side_tool="true" visible="true" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" sideWeight="0.49315068" visible="true" weight="0.25893825" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5068493" side_tool="true" visible="true" weight="0.25893825" />
       <window_info anchor="bottom" id="Python Console" order="9" sideWeight="0.9077977" weight="0.32502708" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -200,8 +205,8 @@
     <entry file="file://$USER_HOME$/.PyCharmCE2018.3/system/python_stubs/1050342006/builtins.py" />
     <entry file="file://$PROJECT_DIR$/Processor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-6855">
-          <caret line="88" column="9" selection-start-line="88" selection-start-column="9" selection-end-line="88" selection-end-column="9" />
+        <state relative-caret-position="537">
+          <caret line="78" column="4" selection-start-line="78" selection-start-column="4" selection-end-line="78" selection-end-column="4" />
           <folding>
             <element signature="e#2494#2515#0" expanded="true" />
           </folding>

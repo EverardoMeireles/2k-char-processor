@@ -67,9 +67,14 @@ from PIL import ImageDraw
 import glob
 import os
 import sys
+import time
 
 def closeWindow():
     window.destroy()
+
+def closeWindowAndExit():
+    window.destroy()
+    print('Program is exiting...')
     exit()
 
 def check1Changed():
@@ -85,7 +90,9 @@ window.configure()
 #
 # frame3 = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
 # frame3.grid(row=8, sticky=W)
-
+print ('initialized')
+unixT = time.time()
+unixT2 = unixT
 loopCycle = 0
 path = ""
 choice = StringVar()
@@ -133,7 +140,9 @@ def click():
 
     print("choice is :"+choice.get())
     print("String: "+commandString)
+    closeWindow()
     os.system("start /wait cmd /c "+commandString)
+
 
 Label(window, text="2k char processor", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
 Label(window, text="Put your charsets in the 'Generated' folder, and your individual character sprites in the root folder and select one of the options below", fg="black", font="none 9 bold") .grid(row=2, column=0, sticky=W)
@@ -207,7 +216,7 @@ blue = Entry(frameTransparent, width=10, textvariable=b) .grid(row=1, column=6, 
 #buttons
 Button(window, text ="SUBMIT", width=6, command=click) .grid(row=15, column=0, sticky=W,pady=5)#########################################################################################################################################
 
-Button(window, text ="EXIT", width=6, command=closeWindow) .grid(row=16, column=0, sticky=W)############################################################################################################################################
+Button(window, text ="EXIT", width=6, command=closeWindowAndExit) .grid(row=16, column=0, sticky=W)############################################################################################################################################
 
 
 
@@ -512,7 +521,12 @@ if parameterIterate('-help'):
 if parameterIterate('-start'):
     window.mainloop()
 
-if loopCycle != 0:
-    window.mainloop()
+unixT2 = time.time()
+print('CLOCK:')
+print(time.perf_counter())
+if time.perf_counter() < 1.0:
+    print('inside mainloop fct')
 
 loopCycle = loopCycle+1
+
+window.mainloop()
