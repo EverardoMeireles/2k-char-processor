@@ -61,6 +61,8 @@
 #
 #
 # os.system("start /wait cmd /c Python Processor.py")
+
+
 from tkinter import *
 from PIL import Image
 from PIL import ImageDraw
@@ -80,19 +82,12 @@ def closeWindowAndExit():
 def check1Changed():
     checklC = ""
 
+#tkinter window initialisation
 window = Tk()
 window.title("2k-char-processor")
 window.configure()
 
-#
-# frame3 = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
-# frame3.grid(row=7, sticky=W)
-#
-# frame3 = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
-# frame3.grid(row=8, sticky=W)
-print ('initialized')
-unixT = time.time()
-unixT2 = unixT
+#variable initialisation
 loopCycle = 0
 path = ""
 choice = StringVar()
@@ -115,12 +110,10 @@ def click():
     print("choice: "+str(choice))
     commandString = "Python Processor.py "
     if choice.get() == "cut":
-        print("AOAOAOAOAOAO")
         commandString = commandString + "-cut ./Generated/"
     else:
         if choice.get() == "charset":
             commandString = commandString + "-charset "+charSize.get()+" "+canvasSizeY.get()+" "+canvasSizeY.get()+ " ./characters/"
-            # Python Processor.py -resize 2 replace -charset 3 3 3 -char_size 144 256 -canvas_size 576 512
             if(len(optional1CharSizeX.get())!=0 and len(optional1CharSizeY.get())!=0 and len(optiona12CanvasSizeX.get())!=0 and len(optional2CanvasSizeY.get())!=0):
                 commandString = commandString + " -char_size "+optional1CharSizeX.get()+" "+ optional1CharSizeY.get()+" -canvas_size "+optiona12CanvasSizeX.get()+" "+optional2CanvasSizeY.get()
             if checkVXValue.get() == "on":
@@ -131,10 +124,6 @@ def click():
             else:
                 if choice.get() == "transparent":
                     commandString = commandString + "-transparent"
-                    # if charsetOrCharacterTransparent.get() == "characters":
-                    #     commandString = commandString + " ./characters/"
-                    # else:
-                    #     commandString = commandString + " ./Generated/"
                     commandString = commandString + " "+charsetOrCharacterTransparent.get()
                     commandString = commandString + " "+r.get()+" "+g.get()+" "+b.get()
 
@@ -143,7 +132,7 @@ def click():
     closeWindow()
     os.system("start /wait cmd /c "+commandString)
 
-
+#tkinter UI elements
 Label(window, text="2k char processor", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
 Label(window, text="Put your charsets in the 'Generated' folder, and your individual character sprites in the root folder and select one of the options below", fg="black", font="none 9 bold") .grid(row=2, column=0, sticky=W)
 Label(window, text="What do you want to do?", fg="black", font="none 12 bold") .grid(row=3, column=0, sticky=W,pady=6)###############################################################################################################
@@ -211,14 +200,10 @@ green = Entry(frameTransparent, width=10, textvariable=g) .grid(row=1, column=4,
 Label(frameTransparent, text="B", fg="black", font="none 8 bold") .grid(row=1, column=5, sticky=W)
 blue = Entry(frameTransparent, width=10, textvariable=b) .grid(row=1, column=6, sticky=W)
 
-
-
 #buttons
 Button(window, text ="SUBMIT", width=6, command=click) .grid(row=15, column=0, sticky=W,pady=5)#########################################################################################################################################
 
 Button(window, text ="EXIT", width=6, command=closeWindowAndExit) .grid(row=16, column=0, sticky=W)############################################################################################################################################
-
-
 
 def parameterIterate(argvCompare):
     i = 0
@@ -246,7 +231,6 @@ def argHierarchyProcess(parentArgument):
     childArgArray = []
 
     for currentArg in sys.argv:
-
         if parentFound:
             if '-' in currentArg:
                 break
@@ -258,10 +242,7 @@ def argHierarchyProcess(parentArgument):
     return childArgArray
 
 # Cuts charset into individual character pngs.
-def charsetCutIntoPieces(sourcePath):
-    # if not os.path.exists('Characters'):
-    #     os.makedirs('Characters')
-
+def charsetCutIntoPieces(sourcePath):    
     i = 0
     #sourcePath default value
     if(sourcePath == ""):
@@ -314,8 +295,6 @@ def resizePng(multiplier, mode, replace):
         else:
             img.save(name, img.format, quality='keep')
 
-# the main functionality of this program, converts the old rm2k charset format to a new format by resizing it.
-
 #make background transparent
 def removeBackground(sourcePath,r,g,b):
     print(sourcePath + "*.png")
@@ -336,8 +315,10 @@ def removeBackground(sourcePath,r,g,b):
 
         img.putdata(newData)
         img.save(infile, 'png')
-
+        
+# the main functionality of this program, converts the old rm2k charset format to a new format by resizing and converting it.
 def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier = 3, sourcePath = "./characters/"):
+    # Conversion mainloop
     # Parameters:
     # charset scale
     # canvas scale x
@@ -415,8 +396,7 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
         # Converts character to the rmvx charset format.
         if parameterIterate('-VX'):
             w, h = img.size
-            # w = stringConvertToIntFloat(w)
-            # h = stringConvertToIntFloat(h)
+            
             imgTemp1 = img.crop((0, 0, w, h/4))
             imgTemp2 = img.crop((0, h/4, w, h/2))
             imgTemp3 = img.crop((0, h/2, w, ((h/2) + (h/4))))
@@ -520,8 +500,8 @@ if parameterIterate('-help'):
 
 if parameterIterate('-start'):
     window.mainloop()
-
-unixT2 = time.time()
+    
+#for debugging, will remove later
 print('CLOCK:')
 print(time.perf_counter())
 if time.perf_counter() < 1.0:
