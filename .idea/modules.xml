@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/CharacterCreation.iml" filepath="$PROJECT_DIR$/.idea/CharacterCreation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/2k-char-processor.iml" filepath="$PROJECT_DIR$/.idea/2k-char-processor.iml" />
     </modules>
   </component>
 </project>

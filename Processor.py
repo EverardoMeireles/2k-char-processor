@@ -62,6 +62,8 @@
 #
 # os.system("start /wait cmd /c Python Processor.py")
 from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox
 from PIL import Image
 from PIL import ImageDraw
 import glob
@@ -80,6 +82,44 @@ def closeWindowAndExit():
 def check1Changed():
     checklC = ""
 
+
+def browseFiles():
+    path = filedialog.askdirectory(initialdir="/",
+                                          title="Select a path")
+    path = path + '/'
+    pathEntry.delete(0,END)
+    pathEntry.insert(END, path)
+    print("qsdqsdqsdsdqsd")
+    updateTransparency()
+    print("Path: " + " " + path)
+    if(" " in path):
+        messagebox.showwarning("Invalid path", "the path can't contain spaces or the character '-'")
+        pathEntry.delete(0, END)
+
+    ()
+
+def showUserInfo():
+    text = "This program lets you port rm2k/2k3 charsets into other engines while conserving their aspect ratio.\n\n" \
+            "Just choose the path of your charset files and use the options\n\n"
+    messagebox.showinfo("User info", text)
+
+def updateTransparency():
+    img = Image.open(glob.glob(pathEntry.get() + "*.png")[0])
+    img = img.convert("RGBA")
+    datas = img.getdata()
+    print(datas)
+    red.delete(0, END)
+    red.insert(END, datas[0][0])
+    green.delete(0, END)
+    green.insert(END, datas[0][1])
+    blue.delete(0, END)
+    blue.insert(END, datas[0][2])
+    print(datas[0][0])
+    print(datas[0][1])
+    print(datas[0][2])
+
+
+
 window = Tk()
 window.title("2k-char-processor")
 window.configure()
@@ -91,11 +131,12 @@ window.configure()
 # frame3 = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
 # frame3.grid(row=8, sticky=W)
 print ('initialized')
+path = ""
 unixT = time.time()
 unixT2 = unixT
 loopCycle = 0
-path = ""
 choice = StringVar()
+transparentChoice = StringVar()
 charSize= StringVar()
 canvasSizeX= StringVar()
 canvasSizeY= StringVar()
@@ -110,62 +151,104 @@ optional2CanvasSizeY = StringVar()
 r = StringVar()
 g = StringVar()
 b = StringVar()
+twoOrThree = StringVar()
+transparentAuto = StringVar()
 
 def click():
     print("choice: "+str(choice))
     commandString = "Python Processor.py "
     if choice.get() == "cut":
-        print("AOAOAOAOAOAO")
-        commandString = commandString + "-cut ./Generated/"
+        commandString = commandString + "-cut " + pathEntry.get()
     else:
         if choice.get() == "charset":
-            commandString = commandString + "-charset "+charSize.get()+" "+canvasSizeY.get()+" "+canvasSizeY.get()+ " ./characters/"
+            commandString = commandString + "-charset " + charSize.get() + " " + canvasSizeY.get() + " " + canvasSizeY.get() + " " + pathEntry.get()
+
             # Python Processor.py -resize 2 replace -charset 3 3 3 -char_size 144 256 -canvas_size 576 512
-            if(len(optional1CharSizeX.get())!=0 and len(optional1CharSizeY.get())!=0 and len(optiona12CanvasSizeX.get())!=0 and len(optional2CanvasSizeY.get())!=0):
+            if(len(optional1CharSizeX.get()) != 0 and len(optional1CharSizeY.get()) != 0 and len(optiona12CanvasSizeX.get()) != 0 and len(optional2CanvasSizeY.get()) != 0):
                 commandString = commandString + " -char_size "+optional1CharSizeX.get()+" "+ optional1CharSizeY.get()+" -canvas_size "+optiona12CanvasSizeX.get()+" "+optional2CanvasSizeY.get()
+
             if checkVXValue.get() == "on":
                 commandString = commandString + " -VX"
         else:
             if choice.get() == "resize":
-                commandString = commandString + "-resize "+multiplier.get()+" "+charsetOrCharacterResize.get()
+                commandString = commandString + "-resize " + multiplier.get() + " " + pathEntry.get()
+
             else:
-                if choice.get() == "transparent":
-                    commandString = commandString + "-transparent"
-                    # if charsetOrCharacterTransparent.get() == "characters":
-                    #     commandString = commandString + " ./characters/"
-                    # else:
-                    #     commandString = commandString + " ./Generated/"
-                    commandString = commandString + " "+charsetOrCharacterTransparent.get()
-                    commandString = commandString + " "+r.get()+" "+g.get()+" "+b.get()
+                if choice.get() == "to_mv":
+                    commandString = commandString + "-to_mv " + twoOrThree.get() + " " + pathEntry.get() + " -VX"
+
+    if transparentChoice.get() == "on":
+        commandString = commandString + " -transparent"
+        # if charsetOrCharacterTransparent.get() == "characters":
+        #     commandString = commandString + " ./characters/"
+        # else:
+        #     commandString = commandString + " ./Generated/"
+        commandString = commandString + " " + pathEntry.get()
+        commandString = commandString + " " + r.get() + " " + g.get() + " " + b.get()
 
     print("choice is :"+choice.get())
     print("String: "+commandString)
     closeWindow()
-    os.system("start /wait cmd /c "+commandString)
+    os.system("start /wait cmd /c " + commandString)
+
+def disableEntriesTrasparentAuto():
+    if transparentAuto.get() == 'on':
+        red.configure(state = 'disabled')
+        green.configure(state = 'disabled')
+        blue.configure(state = 'disabled')
+    else:
+        red.configure(state = 'normal')
+        green.configure(state = 'normal')
+        blue.configure(state = 'normal')
+
+#Label(window, text="Choose file", fg="black", font="none 12 bold") .grid(row=1, column=0)
+#Label(window, text="Put your charsets in the 'Generated' folder, and your individual character sprites in the root folder and select one of the options below", fg="black", font="none 9 bold") .grid(row=2, column=0, sticky=W)
+
+# mini line break
+#Label(window, text="") .grid(row=0, column=0, sticky=W)
+
+button_explore = Button(window, text = "Info", command = showUserInfo)
+button_explore.grid(row=0, column=0)
+
+button_explore = Button(window, text = "Choose your path", command = browseFiles)
+button_explore.grid(row=1, column=0)
+pathEntry = Entry(window, width=100, textvariable=path)
+pathEntry.grid(row=2, column=0, sticky=W, pady=5)
 
 
-Label(window, text="2k char processor", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
-Label(window, text="Put your charsets in the 'Generated' folder, and your individual character sprites in the root folder and select one of the options below", fg="black", font="none 9 bold") .grid(row=2, column=0, sticky=W)
-Label(window, text="What do you want to do?", fg="black", font="none 12 bold") .grid(row=3, column=0, sticky=W,pady=6)###############################################################################################################
+Label(window, text="What do you want to do?", fg="black", font="none 12 bold") .grid(row=4, column=0, sticky=W,pady=6)
+
+#-To mv
+checkToMV = Radiobutton(window, text="Convert to rpg maker MV's format", variable=choice, value="to_mv")
+checkToMV.grid(row=5, column=0, sticky=W)
+checkToMV.select()
+frameToMV = Frame(window, borderwidth=2, relief = "groove", pady=5)
+frameToMV.grid(row=6, sticky=W)
+Label(frameToMV, text="scale by: ", fg="black", font="none 12 bold") .grid(row=0, column=0, sticky=W)
+check2 = Radiobutton(frameToMV, text="2", variable=twoOrThree, value="2")
+check2.grid(row=0, column=1, sticky=W)
+check2.select()
+check3 = Radiobutton(frameToMV, text="3", variable=twoOrThree, value="3")
+check3.grid(row=0, column=2, sticky=W)
+
+# mini line break
+Label(window, text="") .grid(row=7, column=0, sticky=W)
 
 #-cut
-checkCut = Radiobutton(window, text="cut a charset into individual character spritesheets",variable=choice, value="cut") .grid(row=4, column=0, sticky=W)
+checkCut = Radiobutton(window, text="Cut a charset into individual character sprites", variable=choice, value="cut")
+checkCut.grid(row=8, column=0, sticky=W)
 frameCut = Frame(window, borderwidth=2, relief = "groove", pady=5)
-frameCut.grid(row=5, sticky=W)#########################################################################################################################################################################################################
+frameCut.grid(row=9, sticky=W)
 
-#line break
-Label(window, text="\n", fg="black", font="none 12 bold") .grid(row=6, column=0, sticky=W)###############################################################################################################
+# mini line break
+Label(window, text="") .grid(row=10, column=0, sticky=W)
+
 #-charset
-checkCharset = Radiobutton(window, text="Make a charset from individual char sprites and resize the charset",variable=choice, value="charset") .grid(row=7, column=0, sticky=W)
+checkCharset = Radiobutton(window, text="Make a charset from individual char sprites and resize the charset", variable=choice, value="charset") .grid(row=11, column=0, sticky=W)
 frameCharset = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
-frameCharset.grid(row=8, sticky=W)#####################################################################################################################################################################################################
+frameCharset.grid(row=12, sticky=W)
 Label(frameCharset, text="Character size multiplier", fg="black", font="none 12 bold") .grid(row=0, column=0, sticky=W)
 charSizeEntry = Entry(frameCharset, width=5, textvariable=charSize) .grid(row=0, column=1, sticky=W)
-Label(frameCharset, text="Charset canvas size multiplier", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
-Label(frameCharset, text="X", fg="black", font="none 6 bold") .grid(row=1, column=1, sticky=E)
-canvasSizeXEntry = Entry(frameCharset, width=5,textvariable=canvasSizeX) .grid(row=1, column=2, sticky=W)
-Label(frameCharset, text="Y", fg="black", font="none 6 bold") .grid(row=1, column=3, sticky=W)
-canvasSizeYEntry = Entry(frameCharset, width=5,textvariable=canvasSizeY) .grid(row=1, column=4, sticky=W)
 #optional 1
 Label(frameCharset, text="(optional)Custom char size", fg="black", font="none 12 bold") .grid(row=2, column=0, sticky=W)
 Label(frameCharset, text="X", fg="black", font="none 6 bold") .grid(row=2, column=1, sticky=E)
@@ -178,46 +261,55 @@ Label(frameCharset, text="X", fg="black", font="none 6 bold") .grid(row=3, colum
 X2 = Entry(frameCharset, width=5, textvariable=optiona12CanvasSizeX) .grid(row=3, column=2, sticky=W)
 Label(frameCharset, text="Y", fg="black", font="none 6 bold") .grid(row=3, column=3, sticky=W)
 Y2 = Entry(frameCharset, width=5, textvariable=optional2CanvasSizeY) .grid(row=3, column=4, sticky=W)
-checkVX = Checkbutton(frameCharset, text='Convert to VX format(Down, ,Left, Right, Up)', onvalue='on', offvalue='off',variable=checkVXValue) .grid(row=4, column=0, sticky=W)
+checkVX = Checkbutton(frameCharset, text='Convert to VX format(Down, ,Left, Right, Up)', onvalue='on', offvalue='off',variable=checkVXValue)
+checkVX.grid(row=4, column=0, sticky=W)
+checkVX.deselect()
 
-#line break
-Label(window, text="\n", fg="black", font="none 12 bold") .grid(row=9, column=0, sticky=W)###############################################################################################################
+# mini line break
+Label(window, text="") .grid(row=13, column=0, sticky=W)
 
 #-resize
-checkResize = Radiobutton(window, text="Resize",variable=choice, value="resize") .grid(row=10, column=0, sticky=W)
+checkResize = Radiobutton(window, text="Resize only",variable=choice, value="resize") .grid(row=14, column=0, sticky=W)
 frameResize = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
-frameResize.grid(row=11, sticky=W)######################################################################################################################################################################################################
+frameResize.grid(row=15, sticky=W)
 Label(frameResize, text="Character size multiplier", fg="black", font="none 12 bold") .grid(row=0, column=0, sticky=W)
 resizeMultiplier = Entry(frameResize, width=5, textvariable=multiplier) .grid(row=0, column=1, sticky=W)
-Label(frameResize, text="Resize character or charset?", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
-R1 = Radiobutton(frameResize, text="characters", variable=charsetOrCharacterResize, value="character") .grid(row=1, column=1, sticky=W)
-R2 = Radiobutton(frameResize, text="charsets", variable=charsetOrCharacterResize, value="charset") .grid(row=1, column=2, sticky=W)
 
-#line break
-Label(window, text="\n", fg="black", font="none 12 bold") .grid(row=12, column=0, sticky=W)###############################################################################################################
+# mini line break
+Label(window, text="") .grid(row=16, column=0, sticky=W)
 
 #-transparent
-checkTransparent = Radiobutton(window, text="make transparent",variable=choice, value="transparent") .grid(row=13, column=0, sticky=W)
+checkTransparent = Checkbutton(window, text="make transparent (this will make ALL files in the folder transparent)", onvalue='on',variable=transparentChoice)
+checkTransparent.grid(row=17, column=0, sticky=W)
+checkTransparent.select()
 frameTransparent = Frame(window, width=20, borderwidth=2, relief = "groove", pady=5)
-frameTransparent.grid(row=14, sticky=W)#################################################################################################################################################################################################
-Label(frameTransparent, text="make characters or charsets transparent?", fg="black", font="none 12 bold") .grid(row=0, column=0, sticky=W)
-R2 = Radiobutton(frameTransparent, text="characters",variable=charsetOrCharacterTransparent, value="./characters/") .grid(row=0, column=1, sticky=W)
-R3 = Radiobutton(frameTransparent, text="charsets", variable=charsetOrCharacterTransparent, value="./Generated/") .grid(row=0, column=2, sticky=W)
+frameTransparent.grid(row=18, sticky=W)
 Label(frameTransparent, text="Background color", fg="black", font="none 12 bold") .grid(row=1, column=0, sticky=W)
 Label(frameTransparent, text="R", fg="black", font="none 8 bold") .grid(row=1, column=1, sticky=E)
-red = Entry(frameTransparent, width=10, textvariable=r) .grid(row=1, column=2, sticky=W)
-Label(frameTransparent, text="G", fg="black", font="none 8 bold") .grid(row=1, column=3, sticky=W)
-green = Entry(frameTransparent, width=10, textvariable=g) .grid(row=1, column=4, sticky=W)
+red = Entry(frameTransparent, width=10, textvariable=r, state='disabled')
+red.grid(row=1, column=2, sticky=W)
+Label(frameTransparent, text="G", fg="black", font="none 8 bold").grid(row=1, column=3, sticky=W)
+green = Entry(frameTransparent, width=10, textvariable=g, state='disabled')
+green.grid(row=1, column=4, sticky=W)
 Label(frameTransparent, text="B", fg="black", font="none 8 bold") .grid(row=1, column=5, sticky=W)
-blue = Entry(frameTransparent, width=10, textvariable=b) .grid(row=1, column=6, sticky=W)
-
-
+blue = Entry(frameTransparent, width=10, textvariable=b, state='disabled')
+blue.grid(row=1, column=6, sticky=W)
+checkAutoTransparent = Checkbutton(frameTransparent, text="auto", onvalue = 'on', offvalue = 'off', variable=transparentAuto, command = disableEntriesTrasparentAuto)
+checkAutoTransparent.grid(row=1, column=7, sticky=W)
+checkAutoTransparent.select()
 
 #buttons
-Button(window, text ="SUBMIT", width=6, command=click) .grid(row=15, column=0, sticky=W,pady=5)#########################################################################################################################################
+Button(window, text ="SUBMIT", width=6, command=click) .grid(row=19, column=0,pady=5)
 
-Button(window, text ="EXIT", width=6, command=closeWindowAndExit) .grid(row=16, column=0, sticky=W)############################################################################################################################################
+Button(window, text ="EXIT", width=6, command=closeWindowAndExit) .grid(row=20, column=0)
 
+
+
+def removeSpaces(text):
+    return text.replace(" ", "<")
+
+def addSpaces(text):
+    return text.replace("<", " ")
 
 
 def parameterIterate(argvCompare):
@@ -263,10 +355,7 @@ def charsetCutIntoPieces(sourcePath):
     #     os.makedirs('Characters')
 
     i = 0
-    #sourcePath default value
-    if(sourcePath == ""):
-        sourcePath = "./Generated/"
-
+    print("THE PATH: "+sourcePath)
     for infile in glob.glob(sourcePath + "*.png"):
         img = Image.open(infile)
         w, h = img.size
@@ -280,23 +369,23 @@ def charsetCutIntoPieces(sourcePath):
         imgTemp7 = img.crop((w/2, h/2, ((w/2) + (w/4)), h))
         imgTemp8 = img.crop((((w/2) + (w/4)), h/2, w, h))
 
-        imgTemp1.save('Characters/'+str(i) + '_' + '1' + '.png', imgTemp1.format, quality='keep')
-        imgTemp2.save('Characters/'+str(i) + '_' + '2' + '.png', imgTemp2.format, quality='keep')
-        imgTemp3.save('Characters/'+str(i) + '_' + '3' + '.png', imgTemp3.format, quality='keep')
-        imgTemp4.save('Characters/'+str(i) + '_' + '4' + '.png', imgTemp4.format, quality='keep')
-        imgTemp5.save('Characters/'+str(i) + '_' + '5' + '.png', imgTemp1.format, quality='keep')
-        imgTemp6.save('Characters/'+str(i) + '_' + '6' + '.png', imgTemp2.format, quality='keep')
-        imgTemp7.save('Characters/'+str(i) + '_' + '7' + '.png', imgTemp3.format, quality='keep')
-        imgTemp8.save('Characters/'+str(i) + '_' + '8' + '.png', imgTemp4.format, quality='keep')
+        #save individual character sprites
+        imgTemp1.save(sourcePath + str(i) + '_' + '1' + '.png', imgTemp1.format, quality='keep')
+        imgTemp2.save(sourcePath + str(i) + '_' + '2' + '.png', imgTemp2.format, quality='keep')
+        imgTemp3.save(sourcePath + str(i) + '_' + '3' + '.png', imgTemp3.format, quality='keep')
+        imgTemp4.save(sourcePath + str(i) + '_' + '4' + '.png', imgTemp4.format, quality='keep')
+        imgTemp5.save(sourcePath + str(i) + '_' + '5' + '.png', imgTemp1.format, quality='keep')
+        imgTemp6.save(sourcePath + str(i) + '_' + '6' + '.png', imgTemp2.format, quality='keep')
+        imgTemp7.save(sourcePath + str(i) + '_' + '7' + '.png', imgTemp3.format, quality='keep')
+        imgTemp8.save(sourcePath + str(i) + '_' + '8' + '.png', imgTemp4.format, quality='keep')
         i += 1
 
 # Resize pngs
-def resizePng(multiplier, mode, replace):
+def resizePng(multiplier, path):
+    print("PPPPPPPPPPPPPPPPPPPPP")
     multiplier = int(multiplier)
-    if mode == "charset":
-        path = "./Generated/"
-    else:
-        path = "./characters/"
+
+    print("debug path: " + path)
     for infile in glob.glob(path + "*.png"):
         img = Image.open(infile)
         x, y = img.size
@@ -309,23 +398,28 @@ def resizePng(multiplier, mode, replace):
 
         print((x, y))
         img = img.resize((x, y))
-        if replace == 'replace':
-            img.save(name, img.format, quality='keep')
-        else:
-            img.save(name, img.format, quality='keep')
+        img.save(name, img.format, quality='keep')
+
 
 # the main functionality of this program, converts the old rm2k charset format to a new format by resizing it.
 
 #make background transparent
-def removeBackground(sourcePath,r,g,b):
-    print(sourcePath + "*.png")
+def removeBackground(sourcePath, r, g, b):
+    print("debug sourcePath: " + sourcePath)
     for infile in glob.glob(sourcePath + "*.png"):
         img = Image.open(infile)
         img = img.convert("RGBA")
         print(infile)
         datas = img.getdata()
-
         newData = []
+        print("transparentAuto.get(): " + transparentAuto.get())
+        if transparentAuto.get() == 'on':
+            print("KKKKKKKKKKKKKKKKKKKKKKK")
+            r = str(datas[0][0])
+            g = str(datas[0][1])
+            b = str(datas[0][2])
+
+        print(r + " " + g + " " + b)
         for item in datas:
             if item[0] == int(r) and item[1] == int(g) and item[2] == int(b):
                 newData.append((int(r), int(g), int(b), 0))
@@ -337,7 +431,8 @@ def removeBackground(sourcePath,r,g,b):
         img.putdata(newData)
         img.save(infile, 'png')
 
-def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier = 3, sourcePath = "./characters/"):
+def charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier, sourcePath):
+    print("HUSQHUSHQUHUEHUQSHDUHQSUDHQSDUQHEUHQUSHUQ")
     # Parameters:
     # charset scale
     # canvas scale x
@@ -350,6 +445,7 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
 
     xScale = 0
     yScale = 0
+    #messagebox.showinfo("User info", "text")
 
     scaleMultiplier = stringConvertToIntFloat(scaleMultiplier)
     xScaleMultiplier = stringConvertToIntFloat(xScaleMultiplier)
@@ -360,6 +456,7 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
     # 128: single charset base height(rm2K 320x240 screen resolution)
     # sets the width and height of the base chars with the parameter -char_size
     # if there's no '-char_size' parameter, it defaults to the base rm2k dimensions
+
     if parameterIterate('-char_size'):
         xSizeToScale = int(argHierarchyProcess('-char_size')[0]) * scaleMultiplier
         ySizeToScale = int(argHierarchyProcess('-char_size')[1]) * scaleMultiplier
@@ -373,6 +470,7 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
     # 256: canvas base height(rm2K, 320x240 resolution)
     # sets the width and height of the canvas with the parameter -canvas_size
     # if there's no '-canvas_size' parameter, it defaults to the base rm2k dimensions
+
     if parameterIterate('-canvas_size'):
         xSizeCanvasScale = int(argHierarchyProcess('-canvas_size')[0]) * xScaleMultiplier
         ySizeCanvasScale = int(argHierarchyProcess('-canvas_size')[1]) * yScaleMultiplier
@@ -384,6 +482,7 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
         ySizeCanvasScale = 256 * yScaleMultiplier
         print(xSizeCanvasScale)
         print(ySizeCanvasScale)
+
 
     sizeToScaleCanvas = xSizeCanvasScale, int(ySizeCanvasScale)
 
@@ -402,10 +501,6 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
     i = 0
     e = 0
     draw = ImageDraw.Draw(imageFinal)
-
-    # creates the 'Generated' folder if it doesn't exists already.
-    if not os.path.exists('Generated'):
-        os.makedirs('Generated')
 
     # Main loop starts.
     for infile in glob.glob(sourcePath+"*.png"):
@@ -441,7 +536,7 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
 
         # Saves completed charset
         if i == iterationLimit:
-            imageFinal.save('Generated/char_resized'+str(e)+'.png', imageFinal.format, quality='keep')
+            imageFinal.save(sourcePath + 'char_resized' + str(e) + '.png', imageFinal.format, quality='keep')
             #print('png created...')
             draw.rectangle([(0, 0), imageFinal.size], fill=(32, 156, 0))
             #print('canvas wipe...')
@@ -453,63 +548,82 @@ def charsetConvert(scaleMultiplier = 3, xScaleMultiplier = 3, yScaleMultiplier =
 
     # Saves the final charset if it has less then 8 sprites.
     if i % 8 != 0:
-        imageFinal.save('Generated/char_resized' + str(e) + '.png', imageFinal.format, quality='keep')
+        imageFinal.save(sourcePath + str(e) + '.png', imageFinal.format, quality='keep')
         # print('png created...')
         # print('template wipe...')
 
-
-# remove background(make transparent)
-if parameterIterate('-transparent'):
-    try:
-        path = argHierarchyProcess('-transparent')[0]
-    except IndexError as e:
-        path = ""
-        print("No source path specified, picking pngs from the local directory to make transparent")
-    r = argHierarchyProcess('-transparent')[1]
-    g = argHierarchyProcess('-transparent')[2]
-    b = argHierarchyProcess('-transparent')[3]
-    removeBackground(path,r,g,b)
-    #removeBackground(path)
+# resize all pngs inside folder.
+if parameterIterate('-resize'):
+    localMultiplier = argHierarchyProcess('-resize')[0]
+    localPath = argHierarchyProcess('-resize')[1]
+    resizePng(localMultiplier, localPath)
 
 # Check if the parameter exists
 if parameterIterate('-cut'):
     try:
-        path = argHierarchyProcess('-cut')[0]
+        localPath = argHierarchyProcess('-cut')[0]
+        print(localPath)
+        charsetCutIntoPieces(localPath)
     except IndexError as e:
-        path = "./Generated/"
-        print("No source path specified, picking charset pngs from the 'Generated' folder")
-    print(path)
-    charsetCutIntoPieces(path)
-
-# resize all pngs inside folder.
-if parameterIterate('-resize'):
-    multiplier = argHierarchyProcess('-resize')[0]
-    mode = ""
-    mode = argHierarchyProcess('-resize')[1]
-    if len(argHierarchyProcess('-resize')) > 2:
-        replace = argHierarchyProcess('-resize')[2]
-    else:
-        replace = 'replaceNot'
-    resizePng(multiplier, mode, replace)
+        messagebox.showwarning("No path", "please choose a valid windows path")
 
 # charset processor.
 if parameterIterate('-charset'):
-
     scaleMultiplier = argHierarchyProcess('-charset')[0]
-    xScaleMultiplier = argHierarchyProcess('-charset')[1]
-    yScaleMultiplier = argHierarchyProcess('-charset')[2]
-
+    # xScaleMultiplier = argHierarchyProcess('-charset')[1]
+    # yScaleMultiplier = argHierarchyProcess('-charset')[2]
     try:
-        path = argHierarchyProcess('-charset')[3]
+        localPath = argHierarchyProcess('-charset')[1]
+        charsetConvert(scaleMultiplier, scaleMultiplier, scaleMultiplier, localPath)
     except IndexError as e:
-        path = ""
-        print("No source path specified, picking character pngs from the local directory")
+        messagebox.showwarning("No path", "please choose a valid windows path")
 
-    print(argHierarchyProcess('-charset')[0])
-    print(argHierarchyProcess('-charset')[1])
-    print(argHierarchyProcess('-charset')[2])
+#convert to rpg maker mv
+if parameterIterate('-to_mv'):
+    try:
+        chosenMultiplier = argHierarchyProcess('-to_mv')[0]
+        localPath = argHierarchyProcess('-to_mv')[1]
+        filesInDirectory = glob.glob(localPath + '*.png')
 
-    charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier, path)
+        print(filesInDirectory)
+
+        charsetCutIntoPieces(localPath)
+
+        for filePath in filesInDirectory:
+            try:
+                os.remove(filePath)
+            except:
+                print("Error while deleting file : ", filePath)
+
+        filesInDirectory = glob.glob(localPath + '*.png')
+        charsetConvert(chosenMultiplier, chosenMultiplier, chosenMultiplier, localPath)
+
+        for filePath in filesInDirectory:
+            try:
+                os.remove(filePath)
+            except:
+                print("Error while deleting file : ", filePath)
+
+    except IndexError as e:
+        messagebox.showwarning("No path", "please choose a valid windows path")
+
+# remove background(make transparent)
+if parameterIterate('-transparent'):
+    try:
+        localPath = argHierarchyProcess('-transparent')[0]
+        if r.get() != "" and g.get() != "" and b.get() != "":
+            print("LOLOOOLOPLOLOLOLOL: " + r.get())
+            argR = argHierarchyProcess('-transparent')[1]
+            argG = argHierarchyProcess('-transparent')[2]
+            argB = argHierarchyProcess('-transparent')[3]
+        else:
+            argR = '0'
+            argG = '0'
+            argB = '0'
+        removeBackground(localPath, argR, argG, argB)
+
+    except IndexError as e:
+        messagebox.showwarning("No path", "pleEEEEEase choose a valid windows path")
 
 # show the user how to use the command.
 if parameterIterate('-help'):
@@ -521,11 +635,11 @@ if parameterIterate('-help'):
 if parameterIterate('-start'):
     window.mainloop()
 
-unixT2 = time.time()
-print('CLOCK:')
-print(time.perf_counter())
-if time.perf_counter() < 1.0:
-    print('inside mainloop fct')
+# unixT2 = time.time()
+# print('CLOCK:')
+# print(time.perf_counter())
+# if time.perf_counter() < 1.0:
+#     print('inside mainloop fct')
 
 loopCycle = loopCycle+1
 
