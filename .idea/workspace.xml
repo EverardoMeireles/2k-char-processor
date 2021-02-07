@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a4f22754-b917-40ad-8767-5e090eb83f30" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Processor.py" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.py" afterDir="false" />
-    </list>
+    <list default="true" id="a4f22754-b917-40ad-8767-5e090eb83f30" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -124,10 +121,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1899" height="348" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1612675380616" />
-    <state x="803" y="126" key="SettingsEditor" timestamp="1612696682617">
+    <state x="803" y="126" key="SettingsEditor" timestamp="1612698913595">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="803" y="126" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1612696682617" />
+    <state x="803" y="126" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040/-1920.0.1920.1040@0.0.1920.1040" timestamp="1612698913595" />
     <state width="498" height="446" key="SwitcherDM" timestamp="1612588078888">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
