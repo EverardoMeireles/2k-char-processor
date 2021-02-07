@@ -89,7 +89,6 @@ def browseFiles():
     path = path + '/'
     pathEntry.delete(0,END)
     pathEntry.insert(END, path)
-    print("qsdqsdqsdsdqsd")
     updateTransparency()
     print("Path: " + " " + path)
     if(" " in path):
@@ -382,7 +381,6 @@ def charsetCutIntoPieces(sourcePath):
 
 # Resize pngs
 def resizePng(multiplier, path):
-    print("PPPPPPPPPPPPPPPPPPPPP")
     multiplier = int(multiplier)
 
     print("debug path: " + path)
@@ -414,7 +412,6 @@ def removeBackground(sourcePath, r, g, b):
         newData = []
         print("transparentAuto.get(): " + transparentAuto.get())
         if transparentAuto.get() == 'on':
-            print("KKKKKKKKKKKKKKKKKKKKKKK")
             r = str(datas[0][0])
             g = str(datas[0][1])
             b = str(datas[0][2])
@@ -432,7 +429,6 @@ def removeBackground(sourcePath, r, g, b):
         img.save(infile, 'png')
 
 def charsetConvert(scaleMultiplier, xScaleMultiplier, yScaleMultiplier, sourcePath):
-    print("HUSQHUSHQUHUEHUQSHDUHQSUDHQSDUQHEUHQUSHUQ")
     # Parameters:
     # charset scale
     # canvas scale x
@@ -612,7 +608,6 @@ if parameterIterate('-transparent'):
     try:
         localPath = argHierarchyProcess('-transparent')[0]
         if r.get() != "" and g.get() != "" and b.get() != "":
-            print("LOLOOOLOPLOLOLOLOL: " + r.get())
             argR = argHierarchyProcess('-transparent')[1]
             argG = argHierarchyProcess('-transparent')[2]
             argB = argHierarchyProcess('-transparent')[3]
