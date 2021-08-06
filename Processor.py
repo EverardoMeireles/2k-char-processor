@@ -187,8 +187,9 @@ def click():
 
     print("choice is :"+choice.get())
     print("String: "+commandString)
+    # os.system("start /wait cmd /c " + commandString)
+    os.system("start run.bat " + commandString)
     closeWindow()
-    os.system("start /wait cmd /c " + commandString)
 
 def disableEntriesTrasparentAuto():
     if transparentAuto.get() == 'on':
