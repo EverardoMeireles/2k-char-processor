@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter import messagebox
 from PIL import Image
+from collections import Counter
 import glob
 import os
 import time
@@ -21,32 +22,32 @@ def browse_files():
     pathEntry.insert(END, path)
     update_transparency()
     print("Path: " + " " + path)
-    if " " in path:
-        messagebox.showwarning("Invalid path", "the path can't contain spaces or the character '-'")
-        pathEntry.delete(0, END)
+    # if " " in path:
+    #     messagebox.showwarning("Invalid path", "the path can't contain spaces or the character '-'")
+    #     #pathEntry.delete(0, END)
 
 
 def show_user_info():
-    text = "This program lets you port rm2k/2k3 charsets into other engines while conserving their  aspect ratio and " \
-           "pixelation.\n\n" \
-            "Just choose the path of your charset files and use the options\n\n"
+    text = "This program lets you port rm2k/2k3 charsets into other engines while conserving their aspect ratio and " \
+           "pixelation. Just choose the path of your charset files and use the options.\n\n" \
+
     messagebox.showinfo("User info", text)
 
 
 def update_transparency():
     img = Image.open(glob.glob(pathEntry.get() + "*.png")[0])
     img = img.convert("RGBA")
-    datas = img.getdata()
-    print(datas)
+    image_data = img.getdata()
+    print(image_data)
     red.delete(0, END)
-    red.insert(END, datas[0][0])
+    red.insert(END, image_data[0][0])
     green.delete(0, END)
-    green.insert(END, datas[0][1])
+    green.insert(END, image_data[0][1])
     blue.delete(0, END)
-    blue.insert(END, datas[0][2])
-    print(datas[0][0])
-    print(datas[0][1])
-    print(datas[0][2])
+    blue.insert(END, image_data[0][2])
+    print(image_data[0][0])
+    print(image_data[0][1])
+    print(image_data[0][2])
 
 
 window = Tk()
@@ -271,17 +272,28 @@ def remove_background(source_path, local_red, local_green, local_blue):
     for infile in glob.glob(source_path + "*.png"):
         img = Image.open(infile)
         img = img.convert("RGBA")
+        x, y = img.size
         print(infile)
-        datas = img.getdata()
+        image_data = img.getdata()
         new_data = []
-        print("transparentAuto.get(): " + transparentAuto.get())
+        corner_pixels = []
         if transparentAuto.get() == 'on':
-            local_red = str(datas[0][0])
-            local_green = str(datas[0][1])
-            local_blue = str(datas[0][2])
+            for right_side_pixels in range(y):
+                corner_pixels.append([image_data[(x - 1) * right_side_pixels][0],
+                                      image_data[(x - 1) * right_side_pixels][1],
+                                      image_data[(x - 1) * right_side_pixels][2]])
 
-        print(local_red + " " + local_green + " " + local_blue)
-        for item in datas:
+            [[result]] = [
+                [list(el) for el, freq in Counter(map(tuple, lst)).most_common(1)]
+                for lst in [corner_pixels]
+            ]
+
+            local_red = result[0]
+            local_green = result[1]
+            local_blue = result[2]
+
+        print("removing background color:(" + str(local_red) + ", " + str(local_green) + ", " + str(local_blue)+")")
+        for item in image_data:
             if item[0] == int(local_red) and item[1] == int(local_green) and item[2] == int(local_blue):
                 new_data.append((int(local_red), int(local_green), int(local_blue), 0))
             else:
@@ -300,7 +312,9 @@ def convert_to_vx(source_path):
     iteration_limit = 8
     x_scale = 0
     y_scale = 0
-
+    canvas_width = 0
+    canvas_height = 0
+    image_final = Image.new('RGB', (0, 0))
     for infile in glob.glob(source_path+"*.png"):
         img = Image.open(infile)
         w, h = img.size
